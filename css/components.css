@@ -1,0 +1,223 @@
+/* ============================================================
+   COMPONENTS – search, tlačítka, karty, badge, cmd
+   ============================================================ */
+
+/* ----- VYHLEDÁVÁNÍ ----- */
+.search-wrap {
+  max-width: 600px;
+  margin: 24px auto 0;
+  position: relative;
+}
+
+.search-wrap::before {
+  content: '🔎';
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.search-wrap input {
+  width: 100%;
+  padding: 14px 20px 14px 46px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-wrap input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.1);
+}
+
+.search-wrap input::placeholder {
+  color: var(--muted);
+}
+
+/* ----- TLAČÍTKA FILTRŮ ----- */
+.filters button {
+  padding: 9px 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: var(--font);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.filters button:hover {
+  color: var(--text);
+  border-color: var(--accent-2);
+}
+
+.filters button.active {
+  background: linear-gradient(90deg,
+    rgba(0, 255, 157, 0.15),
+    rgba(0, 184, 255, 0.15));
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ----- KARTA NÁSTROJE ----- */
+.card {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  background: linear-gradient(160deg, var(--panel), var(--panel-2));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  display: flex;
+  flex-direction: column;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-2);
+  box-shadow: 0 12px 32px -8px rgba(0, 184, 255, 0.25);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Nadpis karty */
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Popis */
+.card .desc {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  flex: 1;
+}
+
+/* Badge (CLI / WEB / AI / PLUGIN) */
+.badge {
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.badge[data-type="WEB"] {
+  background: rgba(0, 184, 255, 0.15);
+  color: var(--accent-2);
+  border-color: rgba(0, 184, 255, 0.3);
+}
+
+.badge[data-type="AI"] {
+  background: rgba(255, 94, 120, 0.15);
+  color: var(--warn);
+  border-color: rgba(255, 94, 120, 0.3);
+}
+
+/* ----- PŘÍKAZ / ODKAZ ----- */
+.cmd-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #050810;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  overflow-x: auto;
+}
+
+.cmd-box .prompt {
+  color: var(--muted);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.cmd-box code {
+  color: var(--accent);
+  white-space: nowrap;
+  flex: 1;
+}
+
+.cmd-box.is-link .prompt {
+  color: var(--accent-2);
+}
+
+.cmd-box.is-link code a {
+  color: var(--accent-2);
+  word-break: break-all;
+  white-space: normal;
+}
+
+/* Tlačítko kopírování */
+.copy-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  transition: all 0.2s;
+  font-family: var(--font);
+}
+
+.copy-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.copy-btn.copied {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+/* ----- ODKAZ NA GITHUB ----- */
+.card .source-link {
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+.card .source-link a {
+  color: var(--muted);
+}
+
+.card .source-link a:hover {
+  color: var(--accent-2);
+}

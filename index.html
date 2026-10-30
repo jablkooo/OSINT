@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSINT Toolkit</title>
+  <meta name="description" content="Katalog OSINT nástrojů – hledání osob, e-mailů, telefonů, domén, geolokace a více.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/tools.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <a href="#/" class="brand">
+      <span class="brand-icon">🕵️</span>
+      <span class="brand-text">
+        <strong>OSINT</strong> Toolkit
+      </span>
+    </a>
+    <nav class="nav" id="sidebarNav"></nav>
+    <div class="sidebar-footer">
+      ⚠️ Používej eticky.<br>OSINT ≠ hacking.
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" aria-label="Otevřít menu">☰</button>
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Hledat nástroj..." style="display:none" autocomplete="off" aria-label="Hledat">
+      </div>
+    </header>
+    <div class="content" id="content"></div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
