@@ -1,110 +1,144 @@
-/* ============================================================
-   LAYOUT – header, footer, hlavní kontejner, sekce
-   ============================================================ */
-
-/* ----- HEADER ----- */
-.site-header {
-  max-width: var(--container);
-  margin: 0 auto 40px;
-  text-align: center;
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 10;
 }
 
-.site-header h1 {
-  font-size: 2.6rem;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+.brand:hover { text-decoration: none; }
+.brand-icon { font-size: 1.6rem; }
+.brand-text strong {
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-}
-
-.site-header h1 span {
   font-weight: 800;
 }
 
-.site-header p {
-  color: var(--muted);
-  font-size: 1rem;
-}
-
-/* ----- FILTRY (nav) ----- */
-.filters {
-  max-width: var(--container);
-  margin: 28px auto;
+.nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  flex-direction: column;
+  padding: 12px 8px;
+  gap: 2px;
+  flex: 1;
 }
 
-/* ----- HLAVNÍ OBSAH ----- */
-main {
-  max-width: var(--container);
+.nav-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  transition: background 0.15s;
+}
+.nav-item:hover { background: var(--panel); text-decoration: none; }
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(0,255,157,0.1), rgba(0,184,255,0.05));
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+}
+
+.nav-icon { font-size: 1.2rem; flex-shrink: 0; }
+.nav-text { display: flex; flex-direction: column; min-width: 0; }
+.nav-name { font-size: 0.92rem; font-weight: 600; }
+.nav-desc {
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-footer {
+  padding: 14px 18px;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Main */
+.main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: rgba(10,14,26,0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 60px;
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+  color: var(--muted);
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .crumb-current {
+  color: var(--text);
+  font-weight: 600;
+}
+.breadcrumb span:not(.crumb-current) { color: var(--muted); opacity: 0.6; }
+
+.search-box input {
+  width: 260px;
+  padding: 8px 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.content {
+  padding: 32px 36px 60px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 }
 
-.category {
-  margin-bottom: 48px;
-}
-
-.category h2 {
-  font-size: 1.4rem;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.category h2 .icon {
-  font-size: 1.5rem;
-}
-
-.category h2 .count {
-  margin-left: auto;
-  font-size: 0.85rem;
-  color: var(--muted);
-  font-weight: 400;
-  background: var(--panel);
-  padding: 4px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-}
-
-/* ----- GRID KARET ----- */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 18px;
-}
-
-/* ----- PRÁZDNÝ STAV ----- */
-.no-results {
+.err {
   text-align: center;
-  padding: 60px 20px;
-  color: var(--muted);
-  display: none;
-}
-
-.no-results.show {
-  display: block;
-}
-
-/* ----- FOOTER ----- */
-.site-footer {
-  max-width: var(--container);
-  margin: 60px auto 0;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-
-.site-footer .warn {
-  display: inline-block;
-  margin-top: 8px;
   color: var(--warn);
+  padding: 40px;
 }
