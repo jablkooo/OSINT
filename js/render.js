@@ -352,3 +352,6 @@ const Renderer = (() => {
       </div>
     `;
   }
+  
+    return { sidebar, toolDetail, scenarioView, homeView, statsView, favoritesView, globalSearchResults };
+})();
