@@ -1,0 +1,110 @@
+/* ============================================================
+   LAYOUT – header, footer, hlavní kontejner, sekce
+   ============================================================ */
+
+/* ----- HEADER ----- */
+.site-header {
+  max-width: var(--container);
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.site-header h1 {
+  font-size: 2.6rem;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.site-header h1 span {
+  font-weight: 800;
+}
+
+.site-header p {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* ----- FILTRY (nav) ----- */
+.filters {
+  max-width: var(--container);
+  margin: 28px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ----- HLAVNÍ OBSAH ----- */
+main {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.category {
+  margin-bottom: 48px;
+}
+
+.category h2 {
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.category h2 .icon {
+  font-size: 1.5rem;
+}
+
+.category h2 .count {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 400;
+  background: var(--panel);
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+/* ----- GRID KARET ----- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+/* ----- PRÁZDNÝ STAV ----- */
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  display: none;
+}
+
+.no-results.show {
+  display: block;
+}
+
+/* ----- FOOTER ----- */
+.site-footer {
+  max-width: var(--container);
+  margin: 60px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.site-footer .warn {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--warn);
+}
