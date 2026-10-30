@@ -319,7 +319,7 @@ const Renderer = (() => {
       <div class="home">
         <div class="home-hero">
           <div class="home-avatar-wrap">
-            <img src="img/avatar.jpg" alt="Jablkooo" class="home-avatar">
+            <img src="https://github.com/jablkooo.png?size=200" alt="Jablkooo" class="home-avatar">
           </div>
           <h1>🕵️ <span>OSINT</span> Toolkit</h1>
           <p class="home-author">od <strong>Jablkooo</strong></p>
