@@ -4,42 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OSINT Toolkit</title>
-  <meta name="description" content="Katalog nástrojů pro sběr a analýzu veřejně dostupných informací">
 
-  <!-- CSS – pořadí záleží: base → layout → components → responsive -->
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/tools.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
-  <header class="site-header">
-    <h1>🕵️ <span>OSINT</span> Toolkit</h1>
-    <p>Katalog nástrojů pro sběr a analýzu veřejně dostupných informací</p>
-
-    <div class="search-wrap">
-      <input type="text" id="search" placeholder="Hledat nástroj, kategorii nebo popis..." autocomplete="off">
+  <aside class="sidebar">
+    <a href="#/" class="brand">
+      <span class="brand-icon">🕵️</span>
+      <span class="brand-text">
+        <strong>OSINT</strong> Toolkit
+      </span>
+    </a>
+    <nav class="nav" id="sidebarNav"></nav>
+    <div class="sidebar-footer">
+      ⚠️ Používej eticky.<br>OSINT ≠ hacking.
     </div>
-  </header>
+  </aside>
 
-  <nav class="filters" id="filters" aria-label="Filtry kategorií"></nav>
+  <main class="main">
+    <header class="topbar">
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Hledat nástroj..." style="display:none" autocomplete="off">
+      </div>
+    </header>
+    <div class="content" id="content"></div>
+  </main>
 
-  <main id="content"></main>
-
-  <div class="no-results" id="noResults">
-    😶‍🌫️ Nic nenalezeno. Zkus jiný výraz.
-  </div>
-
-  <footer class="site-footer">
-    ⚠️ Používej tyto nástroje eticky a v souladu se zákony. OSINT ≠ hacking.<br>
-    <span class="warn">Data z veřejných zdrojů – respektuj GDPR a soukromí.</span>
-  </footer>
-
-  <!-- JS – pořadí záleží: data → utils → render → app -->
   <script src="js/data.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/render.js"></script>
+  <script src="js/router.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
