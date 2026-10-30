@@ -1,118 +1,115 @@
-// ============================================================
-// APP – inicializace, filtry, vyhledávání
-// ============================================================
-
 (() => {
   'use strict';
 
-  const { debounce } = Utils;
+  const sidebarEl   = document.getElementById('sidebarNav');
+  const contentEl   = document.getElementById('content');
+  const searchEl    = document.getElementById('search');
+  const breadcrumbEl = document.getElementById('breadcrumb');
 
-  // ----- DOM -----
-  const contentEl = document.getElementById('content');
-  const filtersEl = document.getElementById('filters');
-  const searchEl = document.getElementById('search');
-  const noResultsEl = document.getElementById('noResults');
+  // --- Vykreslení podle aktuální routy ---
+  function renderRoute({ scenario, tool }) {
+    // Aktivní scénář pro sidebar
+    sidebarEl.innerHTML = Renderer.sidebar(scenario);
 
-  // ----- STAV -----
-  let activeCategory = 'all';
-  let searchQuery = '';
+    // Breadcrumb
+    if (scenario && tool) {
+      const s = SCENARIOS.find(x => x.id === scenario);
+      const t = TOOLS.find(x => x.id === tool);
+      breadcrumbEl.innerHTML = s && t
+        ? `<a href="#/">Domů</a> <span>›</span> <a href="#/${s.id}">${s.icon} ${Utils.escapeHtml(s.name)}</a> <span>›</span> <span class="crumb-current">${Utils.escapeHtml(t.name)}</span>`
+        : '';
+    } else if (scenario) {
+      const s = SCENARIOS.find(x => x.id === scenario);
+      breadcrumbEl.innerHTML = s
+        ? `<a href="#/">Domů</a> <span>›</span> <span class="crumb-current">${s.icon} ${Utils.escapeHtml(s.name)}</span>`
+        : '';
+    } else {
+      breadcrumbEl.innerHTML = '';
+    }
 
-  // ----- INIT -----
-  function init() {
-    if (!CATEGORIES.length || !TOOLS.length) {
-      contentEl.innerHTML = '<p style="text-align:center;color:var(--warn)">Chyba: data se nenačetla.</p>';
+    // Obsah
+    if (!scenario) {
+      contentEl.innerHTML = Renderer.homeView();
+      searchEl.style.display = 'none';
       return;
     }
 
-    // Vykreslit filtry + obsah
-    Renderer.renderAll(contentEl, filtersEl, CATEGORIES, TOOLS);
+    const scen = SCENARIOS.find(s => s.id === scenario);
+    if (!scen) {
+      contentEl.innerHTML = `<p class="err">Scénář nenalezen. <a href="#/">Zpět domů</a></p>`;
+      return;
+    }
 
-    // Event listenery
-    filtersEl.addEventListener('click', onFilterClick);
-    searchEl.addEventListener('input', debounce(onSearch, 150));
-    contentEl.addEventListener('click', onCopyClick);
+    if (tool) {
+      const t = TOOLS.find(x => x.id === tool);
+      if (!t) {
+        contentEl.innerHTML = `<p class="err">Nástroj nenalezen. <a href="#/${scen.id}">Zpět na ${scen.name}</a></p>`;
+        return;
+      }
+      searchEl.style.display = 'none';
+      contentEl.innerHTML = Renderer.toolDetail(t, scen.id);
+      window.scrollTo(0, 0);
+      return;
+    }
 
-    // Hlídat viditelnost – kdy zobrazit "prázdný stav"
-    updateEmptyState();
+    // Seznam nástrojů scénáře + search
+    searchEl.style.display = 'block';
+    searchEl.value = '';
+    const tools = TOOLS.filter(t => t.scenarios.includes(scen.id));
+    contentEl.innerHTML = Renderer.scenarioView(scen, tools);
   }
 
-  // ----- FILTRY -----
-  function onFilterClick(e) {
-    const btn = e.target.closest('button[data-cat]');
-    if (!btn) return;
-
-    activeCategory = btn.dataset.cat;
-
-    // Aktivní tlačítko
-    filtersEl.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    applyFilters();
-  }
-
-  // ----- SEARCH -----
-  function onSearch(e) {
-    searchQuery = e.target.value.toLowerCase().trim();
-    applyFilters();
-  }
-
-  // ----- APLIKACE FILTRŮ -----
-  function applyFilters() {
-    let visibleSections = 0;
-
-    document.querySelectorAll('.category').forEach(sec => {
-      const cat = sec.dataset.cat;
-      const catMatch = (activeCategory === 'all' || activeCategory === cat);
-      let visibleCards = 0;
-
-      sec.querySelectorAll('.card').forEach(card => {
+  // --- Live search uvnitř scénáře ---
+  function bindSearch() {
+    searchEl.addEventListener('input', () => {
+      const q = searchEl.value.toLowerCase().trim();
+      const cards = contentEl.querySelectorAll('.tool-card');
+      let visible = 0;
+      cards.forEach(card => {
         const text = card.textContent.toLowerCase();
-        const textMatch = !searchQuery || text.includes(searchQuery);
-
-        if (catMatch && textMatch) {
-          card.classList.remove('hidden');
-          visibleCards++;
-        } else {
-          card.classList.add('hidden');
-        }
+        const match = !q || text.includes(q);
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
       });
-
-      if (visibleCards > 0) {
-        sec.classList.remove('hidden');
-        visibleSections++;
-        sec.querySelector('.count').textContent = visibleCards;
-      } else {
-        sec.classList.add('hidden');
+      let info = contentEl.querySelector('.search-info');
+      if (q && !visible) {
+        if (!info) {
+          info = document.createElement('p');
+          info.className = 'search-info';
+          info.textContent = '😶‍🌫️ Nic nenalezeno.';
+          contentEl.appendChild(info);
+        }
+      } else if (info) {
+        info.remove();
       }
     });
-
-    noResultsEl.classList.toggle('show', visibleSections === 0);
   }
 
-  // ----- KOPÍROVÁNÍ -----
-  async function onCopyClick(e) {
-    const btn = e.target.closest('.copy-btn');
-    if (!btn) return;
-
-    const text = btn.dataset.copy;
-    const ok = await Utils.copyToClipboard(text);
-
-    const original = btn.textContent;
-    btn.textContent = ok ? '✓ Zkopírováno' : '✗ Chyba';
-    btn.classList.toggle('copied', ok);
-
-    setTimeout(() => {
-      btn.textContent = original;
-      btn.classList.remove('copied');
-    }, 1500);
+  // --- Copy tlačítka ---
+  function bindCopy() {
+    contentEl.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.copy-btn');
+      if (!btn) return;
+      const ok = await Utils.copyToClipboard(btn.dataset.copy);
+      const orig = btn.textContent;
+      btn.textContent = ok ? '✓' : '✗';
+      btn.classList.toggle('copied', ok);
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('copied');
+      }, 1200);
+    });
   }
 
-  // ----- STAV "PRÁZDNÉ" -----
-  function updateEmptyState() {
-    const anyVisible = document.querySelector('.category:not(.hidden)');
-    noResultsEl.classList.toggle('show', !anyVisible);
+  // --- Init ---
+  function init() {
+    Router.onChange(renderRoute);
+    bindSearch();
+    bindCopy();
+
+    if (!location.hash) location.hash = '#/';
+    renderRoute(Router.parse());
   }
 
-  // ----- START -----
   document.addEventListener('DOMContentLoaded', init);
 })();
